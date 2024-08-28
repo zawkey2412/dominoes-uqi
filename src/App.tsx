@@ -210,7 +210,7 @@ export default function App() {
                         dominoes,
                         setDominoes,
                         index,
-                        0, // Correct index for the first input
+                        0,
                         parseInt(e.target.value),
                         undoStack,
                         setUndoStack,
