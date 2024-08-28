@@ -251,7 +251,7 @@ export default function App() {
           )}
           <div className="flex gap-3 items-center text-xl">
             <LuUndo
-              className="cursor-pointer mt-2 hover:text-blue-500"
+              className="cursor-pointer mt-3 text-blue-500 hover:text-green-500"
               onClick={() =>
                 undo(
                   dominoes,
@@ -278,7 +278,7 @@ export default function App() {
               Reset
             </button>
             <LuRedo
-              className="cursor-pointer mt-2 hover:text-blue-500"
+              className="cursor-pointer mt-3 text-blue-500 hover:text-green-500"
               onClick={() =>
                 redo(
                   dominoes,
