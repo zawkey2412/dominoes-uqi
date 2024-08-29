@@ -33,8 +33,8 @@ export const Domino = ({
   };
 
   const isSameNumber = values[0] === values[1];
-  const cardColor = isSameNumber ? 'bg-red-500' : 'bg-white';
-  const dotColor = isSameNumber ? 'bg-white' : 'bg-black';
+  const cardColor = isSameNumber ? "bg-red-500" : "bg-white";
+  const dotColor = isSameNumber ? "bg-white" : "bg-black";
 
   return (
     <div
@@ -55,7 +55,6 @@ export const Domino = ({
 // Function2 Utility
 // --------------------------------//
 
-
 // Angka Random
 // --------------------------------//
 export const getRandomNumber = (min: number, max: number): number =>
@@ -63,13 +62,60 @@ export const getRandomNumber = (min: number, max: number): number =>
 
 // Generate dots
 // --------------------------------//
-export const generateDots = (value: number, dotColor: string) => {
-  const dots = Array.from({ length: value }, (_, i) => (
-    <div key={i} className={`w-2 h-2 ${dotColor} rounded-full m-1`}></div>
-  ));
-  return <div className="flex flex-wrap justify-center">{dots}</div>;
-};
 
+export const generateDots = (value: number, dotColor: string) => {
+  const isActive = (row: number, col: number) => {
+    const positions: { [key: number]: number[][] } = {
+      1: [[2, 2]],
+      2: [
+        [1, 3],
+        [3, 1],
+      ],
+      3: [
+        [1, 3],
+        [2, 2],
+        [3, 1],
+      ],
+      4: [
+        [1, 1],
+        [1, 3],
+        [3, 1],
+        [3, 3],
+      ],
+      5: [
+        [1, 1],
+        [1, 3],
+        [2, 2],
+        [3, 1],
+        [3, 3],
+      ],
+      6: [
+        [1, 1],
+        [1, 3],
+        [2, 1],
+        [2, 3],
+        [3, 1],
+        [3, 3],
+      ],
+    };
+    return positions[value]?.some(([r, c]) => r === row && c === col);
+  };
+
+  return (
+    <div className="grid grid-cols-3 gap-1">
+      {[1, 2, 3].map((row) =>
+        [1, 2, 3].map((col) => (
+          <div
+            key={`${row}-${col}`}
+            className={`w-2 h-2 ${
+              isActive(row, col) ? dotColor : ""
+            } rounded-full m-1`}
+          ></div>
+        ))
+      )}
+    </div>
+  );
+};
 // Undo
 // --------------------------------//
 export const undo = (
@@ -138,7 +184,6 @@ export const handleInputChange = (
   newDominoes[index][valueIndex] = newValue;
   setDominoes(newDominoes);
 };
-
 
 export const addField = (
   dominoes: number[][],
@@ -313,4 +358,3 @@ export const flipDominoes = (
 // ------------------------------------
 export const countDoubleNumbers = (dominoes: number[][]): number =>
   dominoes.filter((domino) => domino[0] === domino[1]).length;
-
