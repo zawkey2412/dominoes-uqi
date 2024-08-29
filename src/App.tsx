@@ -16,11 +16,15 @@ import {
   shuffleDominoes,
   undo,
   redo,
+  removeField,
+  addField,
 } from "./utils";
 import {
   FaCheck,
   FaDice,
+  FaMinus,
   FaPaperPlane,
+  FaPlus,
   FaSortAmountDown,
   FaSortAmountUp,
 } from "react-icons/fa";
@@ -195,7 +199,7 @@ export default function App() {
             </div>
           </div>
           {isEditMode ? (
-            <div className="text-sm text-gray-700">
+            <div className=" w-fit text-sm text-gray-700">
               <div>[</div>
               {dominoes.map((domino, index) => (
                 <div key={index} className="flex items-center mb-2">
@@ -239,9 +243,37 @@ export default function App() {
                     }
                     className="w-12 mx-1 p-1 border rounded"
                   />
-                  <span>],</span>
+                  <span>{index < dominoes.length - 1 && ","}</span>
+                  <FaMinus
+                    className="text-blue-500 hover:text-red-500 cursor-pointer ml-2"
+                    onClick={() =>
+                      removeField(
+                        dominoes,
+                        setDominoes,
+                        index,
+                        undoStack,
+                        setUndoStack,
+                        setRedoStack
+                      )
+                    }
+                    title="Remove Field"
+                  />
                 </div>
               ))}
+              <FaPlus
+                className="text-blue-500 mr-auto ml-14 hover:text-green-500 cursor-pointer mt-3"
+                onClick={() =>
+                  addField(
+                    dominoes,
+                    setDominoes,
+                    [0, 0],
+                    undoStack,
+                    setUndoStack,
+                    setRedoStack
+                  )
+                }
+                title="Add Field"
+              />
               <div>]</div>
             </div>
           ) : (

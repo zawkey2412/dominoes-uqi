@@ -139,6 +139,34 @@ export const handleInputChange = (
   setDominoes(newDominoes);
 };
 
+
+export const addField = (
+  dominoes: number[][],
+  setDominoes: Dispatch<SetStateAction<number[][]>>,
+  newField: number[],
+  undoStack: number[][][],
+  setUndoStack: Dispatch<SetStateAction<number[][][]>>,
+  setRedoStack: Dispatch<SetStateAction<number[][][]>>
+) => {
+  setUndoStack([...undoStack, dominoes]);
+  setRedoStack([]);
+  const newDominoes = [...dominoes, newField];
+  setDominoes(newDominoes);
+};
+
+export const removeField = (
+  dominoes: number[][],
+  setDominoes: Dispatch<SetStateAction<number[][]>>,
+  index: number,
+  undoStack: number[][][],
+  setUndoStack: Dispatch<SetStateAction<number[][][]>>,
+  setRedoStack: Dispatch<SetStateAction<number[][][]>>
+) => {
+  setUndoStack([...undoStack, dominoes]);
+  setRedoStack([]);
+  const newDominoes = dominoes.filter((_, i) => i !== index);
+  setDominoes(newDominoes);
+};
 // Mereset Domino
 // ---------------------------
 export const resetDominoes = (
