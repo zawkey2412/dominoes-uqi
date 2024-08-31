@@ -38,7 +38,7 @@ export const Domino = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center border-2 border-black w-16 h-32 m-2 ${cardColor} rounded-lg shadow-lg cursor-pointer hover:bg-gray-100`}
+      className={`flex flex-col items-center justify-center border-2 border-black w-16 h-32 m-2 ${cardColor} rounded-lg shadow-lg cursor-pointer hover:bg-gray-200`}
       onClick={handleClick}
     >
       <div className="flex-1 flex items-center justify-center">
@@ -55,6 +55,51 @@ export const Domino = ({
 // Function2 Utility
 // --------------------------------//
 
+// Drag and Drop
+// --------------------------------//
+
+export const handleDragStart = (
+  index: number,
+  setDraggedIndex: Dispatch<SetStateAction<number | null>>
+) => (event: React.DragEvent) => {
+  event.dataTransfer.setData("text/plain", index.toString());
+  setDraggedIndex(index);
+};
+
+export const handleDrop = (
+  index: number,
+  dominoes: number[][],
+  setDominoes: Dispatch<SetStateAction<number[][]>>,
+  setDraggedIndex: Dispatch<SetStateAction<number | null>>,
+  undoStack: number[][][],
+  setUndoStack: Dispatch<SetStateAction<number[][][]>>,
+  setRedoStack: Dispatch<SetStateAction<number[][][]>>
+) => (event: React.DragEvent) => {
+  event.preventDefault();
+  const draggedIndex = parseInt(event.dataTransfer.getData("text/plain"), 10);
+
+  if (draggedIndex !== index) {
+    const updatedDominoes = [...dominoes];
+    const [draggedDomino] = updatedDominoes.splice(draggedIndex, 1);
+    updatedDominoes.splice(index, 0, draggedDomino);
+
+    setUndoStack([...undoStack, dominoes]);
+    setRedoStack([]);
+
+    setDominoes(updatedDominoes);
+  }
+  setDraggedIndex(null);
+};
+
+export const handleDragOver = (event: React.DragEvent) => {
+  event.preventDefault();
+};
+
+export const handleDragEnd = (
+  setDraggedIndex: Dispatch<SetStateAction<number | null>>
+) => () => {
+  setDraggedIndex(null);
+};
 // Angka Random
 // --------------------------------//
 export const getRandomNumber = (min: number, max: number): number =>
