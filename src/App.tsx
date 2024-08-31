@@ -54,18 +54,18 @@ export default function App() {
   }, [dominoes]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
-      <h1 className="text-3xl font-semibold mb-6 text-blue-700">
-       Purwadhika's Dominoes Selection Test
+    <div className="min-h-screen  flex flex-col items-center bg-gray-50 px-4 md:px-6">
+      <h1 className="text-3xl text-center font-semibold my-6 text-blue-700">
+        Purwadhika's Dominoes Selection Test
       </h1>
       <p className="mb-8 text-gray-600 text-center">
         Click on a domino to randomize its values, drag and drop to reorder, and
         use the functionalities below to manipulate the data.
       </p>
 
-      <div className="w-full  flex flex-col items-center gap-8">
-        <div className="w-full flex items-center justify-between">
-          <div className="w-1/3"></div>
+      <div className="w-full flex flex-col items-center gap-8">
+        <div className="w-full flex flex-col md:flex-row items-center justify-between">
+          <div className="hidden md:block w-1/3" />
           <div className="flex max-w-4xl flex-wrap justify-center w-1/3">
             {dominoes.map((values, index) => (
               <div
@@ -99,7 +99,10 @@ export default function App() {
               </div>
             ))}
           </div>
-
+          <div className="flex md:hidden items-center text-gray-700">
+            <span className="mr-2">Double numbers count:</span>
+            <span className="font-bold text-lg">{doubleNumbersCount}</span>
+          </div>
           <div className="w-full md:w-1/3 flex justify-center mt-8 md:mt-0">
             <div className="w-full md:w-3/4 lg:w-1/2 p-4 h-fit bg-white border border-gray-300 rounded-lg shadow-md">
               <h2 className="text-justify text-wrap text-xl font-semibold mb-4 text-black">
@@ -150,10 +153,7 @@ export default function App() {
 
                 <li className="flex items-center space-x-2 hover:text-black">
                   <FaBars className="text-gray-500 hover:text-black" />
-                  <span>
-                    Drag and Drop for field and directly on the dominoes to
-                    reorder.
-                  </span>
+                  <span>Drag and Drop</span>
                 </li>
                 <li className="flex items-center space-x-2 hover:text-black">
                   <MdOutlinePlaylistRemove className="text-lime-500 hover:text-black" />
@@ -168,7 +168,7 @@ export default function App() {
           </div>
         </div>
 
-        <div className="flex items-center text-gray-700">
+        <div className="hidden md:flex items-center text-gray-700">
           <span className="mr-2">Double numbers count:</span>
           <span className="font-bold text-lg">{doubleNumbersCount}</span>
         </div>
@@ -404,8 +404,14 @@ export default function App() {
               <div>]</div>
             </div>
           ) : (
-            <div className="overflow-auto pt-4 md:pt-0 text-gray-700">
-              {JSON.stringify(dominoes)}
+            <div>
+              <div className="overflow-auto pt-4 font-bold md:pt-0 text-gray-700">
+                Source:
+              </div>
+
+              <div className="overflow-auto pt-4 md:pt-0 text-gray-700">
+                {JSON.stringify(dominoes)}
+              </div>
             </div>
           )}
           <div className="flex flex-wrap gap-3 items-center justify-center md:justify-between text-xl mt-4 md:mt-0">
