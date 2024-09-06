@@ -48,13 +48,92 @@ export default function App() {
   const [inputNumber, setInputNumber] = useState("");
   const [doubleNumbersCount, setDoubleNumbersCount] = useState<number>(0);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const toggleAccordion = (index: number) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
 
   useEffect(() => {
     setDoubleNumbersCount(countDoubleNumbers(dominoes));
   }, [dominoes]);
 
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    if (hoveredIndex !== null) {
+      timer = setTimeout(() => {
+        toggleAccordion(hoveredIndex);
+      }, 300);
+    }
+    return () => clearTimeout(timer);
+  }, [hoveredIndex]);
+
+  const functionalities = [
+    {
+      icon: <FaShuffle className="text-blue-500" />,
+      title: "Shuffle",
+      description: "Randomizes the order of the dominoes.",
+    },
+    {
+      icon: <GiDominoTiles className="text-green-500" />,
+      title: "Flip",
+      description: "Flips the dominoes to swap the index.",
+    },
+    {
+      icon: <FaSortAmountUp className="text-yellow-500" />,
+      title: "Sort Ascending",
+      description: "Sorts the dominoes in ascending order.",
+    },
+    {
+      icon: <FaSortAmountDown className="text-orange-500" />,
+      title: "Sort Descending",
+      description: "Sorts the dominoes in descending order.",
+    },
+    {
+      icon: <LuUndo className="text-red-500" />,
+      title: "Undo",
+      description: "Reverts the last action.",
+    },
+    {
+      icon: <LuRedo className="text-purple-500" />,
+      title: "Redo",
+      description: "Reapplies the last undone action.",
+    },
+    {
+      icon: <FaPlus className="text-pink-500" />,
+      title: "Add Field",
+      description: "Adds a new domino.",
+    },
+    {
+      icon: <FaMinus className="text-teal-500" />,
+      title: "Remove Field",
+      description: "Removes a domino.",
+    },
+    {
+      icon: <MdModeEditOutline className="text-indigo-500" />,
+      title: "Edit Mode",
+      description: "Enables form editing mode for the dominoes.",
+    },
+    {
+      icon: <FaBars className="text-gray-500" />,
+      title: "Drag and Drop",
+      description: "Allows dragging and dropping to reorder the dominoes.",
+    },
+    {
+      icon: <FaMinus className="text-lime-500" />,
+      title: "Remove Duplicates",
+      description: "Removes duplicate dominoes.",
+    },
+    {
+      icon: <FaPaperPlane className="text-amber-500" />,
+      title: "Remove by total",
+      description: "Removes dominoes by their total value.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen  flex flex-col items-center bg-gray-50 px-4 md:px-6">
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 px-4 md:px-6">
       <h1 className="text-3xl text-center font-semibold my-6 text-blue-700">
         Purwadhika's Dominoes Selection Test
       </h1>
@@ -109,60 +188,24 @@ export default function App() {
                 Functionalities List
               </h2>
               <ul className="list-none space-y-2">
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <FaDice className="text-green-500 hover:text-black" />
-                  <span>Randomize Number</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <FaShuffle className="text-blue-500 hover:text-black" />
-                  <span>Shuffle</span>
-                </li>
-
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <GiDominoTiles className="text-green-500 hover:text-black" />
-                  <span>Flip</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <FaSortAmountUp className="text-yellow-500 hover:text-black" />
-                  <span>Sort Ascending</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <FaSortAmountDown className="text-orange-500 hover:text-black" />
-                  <span>Sort Descending</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <LuUndo className="text-red-500 hover:text-black" />
-                  <span>Undo</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <LuRedo className="text-purple-500 hover:text-black" />
-                  <span>Redo</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <MdModeEditOutline className="text-indigo-500 hover:text-black" />
-                  <span>Edit Mode</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <FaPlus className="text-pink-500 hover:text-black" />
-                  <span>Add Field</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <FaMinus className="text-teal-500 hover:text-black" />
-                  <span>Remove Field</span>
-                </li>
-
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <FaBars className="text-gray-500 hover:text-black" />
-                  <span>Drag and Drop</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <MdOutlinePlaylistRemove className="text-lime-500 hover:text-black" />
-                  <span>Remove Duplicates</span>
-                </li>
-                <li className="flex items-center space-x-2 hover:text-black">
-                  <FaPaperPlane className="text-amber-500 hover:text-black" />
-                  <span>Remove by total</span>
-                </li>
+                {functionalities.map((func, index) => (
+                  <li
+                    key={index}
+                    className="flex flex-col"
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                  >
+                    <div className="flex items-center space-x-2 hover:text-black cursor-pointer">
+                      {func.icon}
+                      <span>{func.title}</span>
+                    </div>
+                    {expandedIndex === index && (
+                      <div className="mt-2 pl-8 text-gray-600">
+                        {func.description}
+                      </div>
+                    )}
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
